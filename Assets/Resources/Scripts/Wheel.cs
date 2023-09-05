@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wheel : MonoBehaviour
+public class Wheel : Car
 {
-    public float Speed = 100.0f;
-    public bool isFront = true;
+    [SerializeField] 
+    float WheelSpeed = 300.0f;
+    [SerializeField]
+    float SpinSpeed = 100.0f;
+    [SerializeField]
+    bool isFront = true;
 
     // Start is called before the first frame update
     void Start()
@@ -20,29 +24,45 @@ public class Wheel : MonoBehaviour
 
     void Rotate()
     {
-        float rotX = Speed * Time.deltaTime;
+        float rotW = WheelSpeed * Time.deltaTime;
 
         if (isFront)
         {
-            float rotY = Speed * Time.deltaTime;
-
             if (Input.GetKey(KeyCode.A))
             {
-                transform.RotateAround(this.transform.position, Vector3.up, rotY);
+                if (TurnAngle >= 60.0f)
+                {
+                    //transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 60.0f, transform.eulerAngles.z);
+                }
+                else
+                {
+                    transform.RotateAround(transform.position, Vector3.down, Time.deltaTime * SpinSpeed);
+                }
             }
+
             if (Input.GetKey(KeyCode.D))
             {
-                transform.RotateAround(this.transform.position, Vector3.down, rotY);
+                if(TurnAngle <= -60.0f)
+                {
+                    //transform.rotation = Quaternion.Euler(transform.eulerAngles.x, -60.0f, transform.eulerAngles.z);
+                }
+                else
+                {
+                    transform.RotateAround(transform.position, Vector3.up, Time.deltaTime * SpinSpeed);
+                }
             }
+
+            Debug.Log(transform.localRotation.eulerAngles.y + " rotation");
         }
         
         if (Input.GetKey(KeyCode.W))
         {
-            transform.RotateAround(this.transform.position, Vector3.right, rotX);
+            transform.Rotate(Vector3.down, rotW);
         }
+
         if (Input.GetKey(KeyCode.S))
         {
-            transform.RotateAround(this.transform.position, Vector3.left, rotX);
+            transform.Rotate(Vector3.up, rotW);
         }
     }
 }
