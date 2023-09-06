@@ -5,7 +5,8 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [SerializeField]
-    float SpinSpeed = 50.0f;
+    float SpinSpeed = 100.0f;
+    float TurnAngle = 0.0f;
 
     // Start is called before the first frame update
     void Start()

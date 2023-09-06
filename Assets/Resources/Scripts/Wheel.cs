@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 
 public class Wheel : Car
@@ -11,9 +12,13 @@ public class Wheel : Car
     [SerializeField]
     bool isFront = true;
 
+    Transform _parent;
+    Vector3 _localScale;
+
     // Start is called before the first frame update
     void Start()
     {
+        _parent = transform.parent;
     }
 
     // Update is called once per frame
@@ -24,45 +29,42 @@ public class Wheel : Car
 
     void Rotate()
     {
-        float rotW = WheelSpeed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Rotate(0, -WheelSpeed * Time.deltaTime, 0);
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.Rotate(0, WheelSpeed * Time.deltaTime, 0);
+        }
 
         if (isFront)
         {
             if (Input.GetKey(KeyCode.A))
             {
-                if (TurnAngle >= 60.0f)
+                if (transform.rotation.eulerAngles.x >= 90.0f &&
+                    transform.rotation.eulerAngles.x <= 270.0f)
                 {
-                    //transform.rotation = Quaternion.Euler(transform.eulerAngles.x, 60.0f, transform.eulerAngles.z);
+                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
                 }
+                    
                 else
-                {
-                    transform.RotateAround(transform.position, Vector3.down, Time.deltaTime * SpinSpeed);
-                }
+                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                if(TurnAngle <= -60.0f)
+                if (transform.rotation.eulerAngles.x >= 90.0f &&
+                    transform.rotation.eulerAngles.x <= 270.0f)
                 {
-                    //transform.rotation = Quaternion.Euler(transform.eulerAngles.x, -60.0f, transform.eulerAngles.z);
+                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
                 }
+                    
                 else
-                {
-                    transform.RotateAround(transform.position, Vector3.up, Time.deltaTime * SpinSpeed);
-                }
+                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
             }
-
-            Debug.Log(transform.localRotation.eulerAngles.y + " rotation");
-        }
-        
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Rotate(Vector3.down, rotW);
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Rotate(Vector3.up, rotW);
+            Debug.Log(transform.localRotation.eulerAngles.y + " Local!! ," + transform.rotation.eulerAngles.y + " World!!");
         }
     }
 }
