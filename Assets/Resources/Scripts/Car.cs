@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    [SerializeField]
-    float MoveSpeed = 10.0f;
-    [SerializeField]
-    float TurnSpeed = 0.1f;
-    protected static float TurnAngle = 0.0f;
-    protected static float AngleGap = 0.0f;
-    protected static float TempAngle = 0.0f;
+    float _acceleration = 1.0f;
+    float _brakingPower = 5.0f;
+    float _turnSpeed = 100.0f;
+
+    float _turnAngle = 0.0f;
+    public float TurnAngle { get { return _turnAngle; } }
+    float _angleGap = 0.0f;
+    public float AngleGap { get { return _angleGap; } }
+    float _tempAngle = 0.0f;
+    public float TempAngle { get { return _tempAngle; } }
+    float _speed = 0.0f;
+    public float Speed { get { return _speed; } }
 
     // Start is called before the first frame update
     void Start()
@@ -21,53 +26,84 @@ public class Car : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move_Control();
         Rotate();
+        Move_Control();
     }
 
     void Move_Control()
     {
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * MoveSpeed);
-            transform.Rotate(Vector3.up * TurnAngle * Time.deltaTime);
+            if (_speed >= 300.0f)
+            {
+                _speed = 300.0f;
+            }
+            else
+            {
+                if (_speed < 0.0f)
+                    _speed += _brakingPower * Time.deltaTime;
+                else
+                    _speed += _acceleration * Time.deltaTime;
+            }
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(Vector3.back * Time.deltaTime * MoveSpeed);
-            transform.Rotate(Vector3.down * TurnAngle * Time.deltaTime);
+            if (_speed <= -100.0f)
+            {
+                _speed = -100.0f;
+            }
+            else
+            {
+                if (_speed > 0.0f)
+                    _speed -= _brakingPower * Time.deltaTime;
+                else
+                    _speed -= _acceleration / 2 * Time.deltaTime;
+            }
         }
+
+        transform.Translate(Vector3.forward * Time.deltaTime * _speed);
+
+        if (_speed > 0.0f)
+            transform.Rotate(Vector3.up * _turnAngle * Time.deltaTime);
+        else
+            transform.Rotate(Vector3.down * _turnAngle * Time.deltaTime);
     }
 
     void Rotate()
     {
         if (Input.GetKey(KeyCode.A))
         {
-            if (TurnAngle > -60.0f)
+            if (_turnAngle > -60.0f)
             {
-                TempAngle = TurnSpeed * Time.deltaTime;
-                TurnAngle -= TempAngle;
-                AngleGap = -60.0f - TurnAngle;
+                _tempAngle = _turnSpeed * Time.deltaTime;
+                _turnAngle -= _tempAngle;
+                _angleGap = -60.0f - _turnAngle;
             }
-            else if (AngleGap > 0.0f)
+            else if (_angleGap > 0.0f)
             {
-                TurnAngle = -60.0f;
+                _turnAngle = -60.0f;
             }
+
+            Debug.Log("Car TurnAngle: " + _turnAngle);
+            Debug.Log("Car TempAngle: " + _tempAngle);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            if (TurnAngle < 60.0f)
+            if (_turnAngle < 60.0f)
             {
-                TempAngle = TurnSpeed * Time.deltaTime;
-                TurnAngle += TempAngle;
-                AngleGap = TurnAngle - 60.0f;
+                _tempAngle = _turnSpeed * Time.deltaTime;
+                _turnAngle += _tempAngle;
+                _angleGap = _turnAngle - 60.0f;
             }
-            else if (AngleGap > 0.0f)
+            else if (_angleGap > 0.0f)
             {
-                TurnAngle = 60.0f;
+                _turnAngle = 60.0f;
             }
+
+            Debug.Log("Car TurnAngle: " + _turnAngle);
+            Debug.Log("Car TempAngle: " + _tempAngle);
         }
     }
 }

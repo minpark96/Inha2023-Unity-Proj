@@ -1,24 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using TreeEditor;
 using UnityEngine;
 
 public class Wheel : Car
 {
-    [SerializeField] 
-    float WheelSpeed = 300.0f;
     [SerializeField]
-    bool isFront = true;
-    
-    bool isMaxAngle = false;
+    bool _isFront = true;
 
-    Transform _parent;
-    Vector3 _localScale;
+    float _wheelSpeed = 0.0f;
+    bool _isMaxAngle = false;
+
+    Car _parentCar;
 
     // Start is called before the first frame update
     void Start()
     {
-        _parent = transform.parent;
+        GameObject go = GameObject.Find("Car");
+        _parentCar = go.GetComponent<Car>();
     }
 
     // Update is called once per frame
@@ -29,55 +27,76 @@ public class Wheel : Car
 
     void Rotate()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Rotate(0, -WheelSpeed * Time.deltaTime, 0);
-        }
+        _wheelSpeed = -_parentCar.Speed * 100.0f;
+        transform.Rotate(0, _wheelSpeed * Time.deltaTime, 0);
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Rotate(0, WheelSpeed * Time.deltaTime, 0);
-        }
-
-        if (isFront)
+        if (_isFront)
         {
             if (Input.GetKey(KeyCode.A))
             {
-                if (AngleGap < 0.0f)
+                Debug.Log("Wheel TurnAngle: " + _parentCar.TurnAngle);
+                Debug.Log("Wheel TempAngle: " + _parentCar.TempAngle);
+                if (_isMaxAngle == false)
                 {
-                    transform.Rotate(0, -TempAngle, 0, Space.World);
-                    isMaxAngle = false;
-                }
-                else if (isMaxAngle == false && AngleGap > 0.0f) 
-                {
-                    if (transform.localRotation.eulerAngles.z > 91.0f)
-                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle - 180, transform.localEulerAngles.z);
+                    if (AngleGap > 0.0f)
+                    {
+                        if (transform.localRotation.eulerAngles.z >= 180.0f)
+                        {
+                            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, _parentCar.TurnAngle - 180, transform.localEulerAngles.z);
+                        }
+                        else
+                        {
+                            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, _parentCar.TurnAngle, transform.localEulerAngles.z);
+                        }
+                        _isMaxAngle = true;
+                    }
                     else
-                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
-                    isMaxAngle = true;
+                    {
+                        transform.RotateAround(transform.parent.position, transform.parent.up, -_parentCar.TempAngle);
+                    }
+                }
+                else
+                {
+                    if (AngleGap < 0.0f)
+                    {
+                        transform.RotateAround(transform.parent.position, transform.parent.up, -_parentCar.TempAngle);
+                        _isMaxAngle = false;
+                    }
                 }
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                if (AngleGap < 0.0f)
+                Debug.Log("Wheel TurnAngle: " + _parentCar.TurnAngle);
+                Debug.Log("Wheel TempAngle: " + _parentCar.TempAngle);
+                if (_isMaxAngle == false)
                 {
-                    transform.Rotate(0, TempAngle, 0, Space.World);
-                    isMaxAngle = false;
-                }
-                else if (isMaxAngle == false && AngleGap > 0.0f)
-                {
-                    if (transform.localRotation.eulerAngles.z > 91.0f)
-                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle - 180, transform.localEulerAngles.z);
+                    if (AngleGap > 0.0f)
+                    {
+                        if (transform.localRotation.eulerAngles.z >= 180.0f)
+                        {
+                            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, _parentCar.TurnAngle - 180, transform.localEulerAngles.z);
+                        }
+                        else
+                        {
+                            transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, _parentCar.TurnAngle, transform.localEulerAngles.z);
+                        }
+                        _isMaxAngle = true;
+                    }
                     else
-                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
-                    isMaxAngle = true;
+                    {
+                        transform.RotateAround(transform.parent.position, transform.parent.up, _parentCar.TempAngle);
+                    }
+                }
+                else
+                {
+                    if (AngleGap < 0.0f)
+                    {
+                        transform.RotateAround(transform.parent.position, transform.parent.up, _parentCar.TempAngle);
+                        _isMaxAngle = false;
+                    }
                 }
             }
-            Debug.Log(transform.localRotation.eulerAngles.z + " Local!!," + transform.rotation.eulerAngles.z + " World!!");
-            Debug.Log("TurnAngle: " + TurnAngle);
-            Debug.Log("TempAngle: " + TempAngle);
-            Debug.Log("AngleGap: " + AngleGap);
         }
     }
 }
