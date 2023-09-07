@@ -385,9 +385,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 10
-  TurnSpeed: 100
-  WheelSpeed: 50
-  SpinSpeed: 100
+  TurnSpeed: 10
+  WheelSpeed: 300
   isFront: 1
 --- !u!1 &61607694
 GameObject:
@@ -803,7 +802,6 @@ MonoBehaviour:
   MoveSpeed: 10
   TurnSpeed: 100
   WheelSpeed: 300
-  SpinSpeed: 100
   isFront: 1
 --- !u!1 &124508402
 GameObject:
@@ -923,7 +921,6 @@ MonoBehaviour:
   MoveSpeed: 10
   TurnSpeed: 100
   WheelSpeed: 300
-  SpinSpeed: 100
   isFront: 0
 --- !u!1 &125949951
 GameObject:
@@ -2830,7 +2827,6 @@ MonoBehaviour:
   MoveSpeed: 10
   TurnSpeed: 100
   WheelSpeed: 300
-  SpinSpeed: 100
   isFront: 1
 --- !u!1 &696940368
 GameObject:
@@ -3432,7 +3428,6 @@ MonoBehaviour:
   MoveSpeed: 10
   TurnSpeed: 100
   WheelSpeed: 300
-  SpinSpeed: 100
   isFront: 0
 --- !u!1 &862854980
 GameObject:
@@ -4411,9 +4406,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 10
-  TurnSpeed: 100
-  WheelSpeed: 50
-  SpinSpeed: 100
+  TurnSpeed: 10
+  WheelSpeed: 300
   isFront: 1
 --- !u!1 &995334200
 GameObject:
@@ -4463,7 +4457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 10
-  TurnSpeed: 100
+  TurnSpeed: 0.1
 --- !u!1 &1014591713
 GameObject:
   m_ObjectHideFlags: 0
@@ -4873,7 +4867,6 @@ MonoBehaviour:
   MoveSpeed: 10
   TurnSpeed: 100
   WheelSpeed: 300
-  SpinSpeed: 100
   isFront: 1
 --- !u!1 &1132607554
 GameObject:
@@ -6490,7 +6483,6 @@ MonoBehaviour:
   MoveSpeed: 10
   TurnSpeed: 100
   WheelSpeed: 300
-  SpinSpeed: 100
   isFront: 1
 --- !u!1 &1719931923
 GameObject:

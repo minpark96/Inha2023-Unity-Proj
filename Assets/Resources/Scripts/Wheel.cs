@@ -8,9 +8,9 @@ public class Wheel : Car
     [SerializeField] 
     float WheelSpeed = 300.0f;
     [SerializeField]
-    float SpinSpeed = 100.0f;
-    [SerializeField]
     bool isFront = true;
+    
+    bool isMaxAngle = false;
 
     Transform _parent;
     Vector3 _localScale;
@@ -43,28 +43,41 @@ public class Wheel : Car
         {
             if (Input.GetKey(KeyCode.A))
             {
-                if (transform.rotation.eulerAngles.x >= 90.0f &&
-                    transform.rotation.eulerAngles.x <= 270.0f)
+                if (AngleGap < 0.0f)
                 {
-                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
+                    transform.Rotate(0, -TempAngle, 0, Space.World);
+                    isMaxAngle = false;
                 }
-                    
-                else
-                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
+                else if (isMaxAngle == false && AngleGap > 0.0f) 
+                {
+                    if (transform.localRotation.eulerAngles.z > 91.0f)
+                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle - 180, transform.localEulerAngles.z);
+                    else
+                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
+                    isMaxAngle = true;
+                }
             }
 
             if (Input.GetKey(KeyCode.D))
             {
-                if (transform.rotation.eulerAngles.x >= 90.0f &&
-                    transform.rotation.eulerAngles.x <= 270.0f)
+                if (AngleGap < 0.0f)
                 {
-                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
+                    transform.Rotate(0, TempAngle, 0, Space.World);
+                    isMaxAngle = false;
                 }
-                    
-                else
-                    transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
+                else if (isMaxAngle == false && AngleGap > 0.0f)
+                {
+                    if (transform.localRotation.eulerAngles.z > 91.0f)
+                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle - 180, transform.localEulerAngles.z);
+                    else
+                        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, TurnAngle, transform.localEulerAngles.z);
+                    isMaxAngle = true;
+                }
             }
-            Debug.Log(transform.localRotation.eulerAngles.y + " Local!! ," + transform.rotation.eulerAngles.y + " World!!");
+            Debug.Log(transform.localRotation.eulerAngles.z + " Local!!," + transform.rotation.eulerAngles.z + " World!!");
+            Debug.Log("TurnAngle: " + TurnAngle);
+            Debug.Log("TempAngle: " + TempAngle);
+            Debug.Log("AngleGap: " + AngleGap);
         }
     }
 }

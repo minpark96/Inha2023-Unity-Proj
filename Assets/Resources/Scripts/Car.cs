@@ -7,9 +7,10 @@ public class Car : MonoBehaviour
     [SerializeField]
     float MoveSpeed = 10.0f;
     [SerializeField]
-    float TurnSpeed = 100.0f;
+    float TurnSpeed = 0.1f;
     protected static float TurnAngle = 0.0f;
     protected static float AngleGap = 0.0f;
+    protected static float TempAngle = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -41,27 +42,32 @@ public class Car : MonoBehaviour
 
     void Rotate()
     {
-        float prevAngle = TurnAngle;
         if (Input.GetKey(KeyCode.A))
         {
-            if (TurnAngle - TurnSpeed * Time.deltaTime <= -60.0f)
+            if (TurnAngle > -60.0f)
             {
-                AngleGap = -60.0f + TurnAngle;
+                TempAngle = TurnSpeed * Time.deltaTime;
+                TurnAngle -= TempAngle;
+                AngleGap = -60.0f - TurnAngle;
+            }
+            else if (AngleGap > 0.0f)
+            {
                 TurnAngle = -60.0f;
             }
-            else
-                TurnAngle -= TurnSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            if (TurnAngle + TurnSpeed * Time.deltaTime >= 60.0f)
+            if (TurnAngle < 60.0f)
             {
-                AngleGap = 60.0f - TurnAngle;
+                TempAngle = TurnSpeed * Time.deltaTime;
+                TurnAngle += TempAngle;
+                AngleGap = TurnAngle - 60.0f;
+            }
+            else if (AngleGap > 0.0f)
+            {
                 TurnAngle = 60.0f;
             }
-            else
-                TurnAngle += TurnSpeed * Time.deltaTime;
         }
     }
 }
