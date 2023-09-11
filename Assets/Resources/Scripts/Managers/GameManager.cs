@@ -12,14 +12,17 @@ public class GameManager : MonoBehaviour
         {
             if (s_Instance == null)
             {
-                GameObject newGameObject = new GameObject("_GameManager");
+                GameObject newGameObject = new GameObject("@GameManager");
                 s_Instance = newGameObject.AddComponent<GameManager>();
             }
             return s_Instance; 
         } 
     }
 
-    public int changeScene = 0;
+    StateManager _state;
+    public StateManager State;
+
+    public int SceneNums = 0;
 
     private void Awake()
     {
@@ -34,10 +37,24 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void ChangeScene()
+    public void Restart()
     {
-        int scene = changeScene++ % 2;
-        //string sceneName = string.Format("Scene_ {0:2d}", scene);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1;
+    }
+
+    public void ChangeNextScene()
+    {
+        int scene = ++SceneNums % 3;
+        Debug.Log(scene);
+        SceneManager.LoadScene(scene);
+    }
+
+    public void ChangePrevScene()
+    {
+        int scene = --SceneNums % 3;
+        Debug.Log(scene);
+        Time.timeScale = 1;
         SceneManager.LoadScene(scene);
     }
 
