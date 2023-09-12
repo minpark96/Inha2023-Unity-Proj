@@ -42,15 +42,15 @@ public class GameCenter : MonoBehaviour
         _ButtonResume = _PauseMenu.transform.GetChild(0).GetComponent<Button>();
         _ButtonResume.onClick.AddListener(() => Resume());
         _ButtonRestart = _PauseMenu.transform.GetChild(1).GetComponent<Button>();
-        _ButtonRestart.onClick.AddListener(() => GameManager.Instance.Restart());
+        _ButtonRestart.onClick.AddListener(() => Managers.Instance.Restart());
         _PauseMenu.SetActive(false);
 
         _GameOverMenu = GameObject.Find("GameOverMenu");
 
         _ButtonTryAgain = _GameOverMenu.transform.GetChild(0).GetComponent<Button>();
-        _ButtonTryAgain.onClick.AddListener(() => GameManager.Instance.Restart());
+        _ButtonTryAgain.onClick.AddListener(() => Managers.Instance.Restart());
         _ButtonMainMenu = _GameOverMenu.transform.GetChild(1).GetComponent<Button>();
-        _ButtonMainMenu.onClick.AddListener(() => GameManager.Instance.ChangePrevScene());
+        _ButtonMainMenu.onClick.AddListener(() => Managers.Instance.ChangePrevScene());
         _GameOverMenu.SetActive(false);
 
         Spawner.WallCount = 0;
@@ -92,7 +92,7 @@ public class GameCenter : MonoBehaviour
 
     void GameClear()
     {
-        GameManager.Instance.ChangeNextScene();
+        Managers.Instance.ChangeNextScene();
     }
 
     void GameOver()

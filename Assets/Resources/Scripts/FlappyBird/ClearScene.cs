@@ -18,8 +18,8 @@ public class ClearScene : MonoBehaviour
         _ClearMenu = GameObject.Find("ClearMenu");
 
         _ButtonTryAgain = _ClearMenu.transform.GetChild(0).GetComponent<Button>();
-        _ButtonTryAgain.onClick.AddListener(() => GameManager.Instance.ChangePrevScene());
+        _ButtonTryAgain.onClick.AddListener(() => Managers.Instance.ChangePrevScene());
         _ButtonMainMenu = _ClearMenu.transform.GetChild(1).GetComponent<Button>();
-        _ButtonMainMenu.onClick.AddListener(() => GameManager.Instance.ChangeNextScene());
+        _ButtonMainMenu.onClick.AddListener(() => Managers.Instance.ChangeNextScene());
     }
 }

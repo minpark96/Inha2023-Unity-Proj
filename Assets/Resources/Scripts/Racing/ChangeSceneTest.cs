@@ -15,20 +15,20 @@ public class ChangeSceneTest : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            GameManager.Instance.ChangeNextScene();
+            Managers.Instance.ChangeNextScene();
         }
         
         if (Input.GetMouseButton(1))
         {
-            if (GameManager.Instance.SceneNums == 0)
+            if (Managers.Instance.SceneNums == 0)
             {
-                GameManager.Instance.ChangeScene("99_End");
-                GameManager.Instance.SceneNums++;
+                Managers.Instance.ChangeScene("99_End");
+                Managers.Instance.SceneNums++;
             }
-            else if (GameManager.Instance.SceneNums == 1)
+            else if (Managers.Instance.SceneNums == 1)
             {
-                GameManager.Instance.ChangeScene("03_Collision");
-                GameManager.Instance.SceneNums++;
+                Managers.Instance.ChangeScene("03_Collision");
+                Managers.Instance.SceneNums++;
             }
         }
     }
@@ -37,15 +37,15 @@ public class ChangeSceneTest : MonoBehaviour
     {
         if(GUI.Button(new Rect(100,200,200,30), "¾À º¯°æ"))
         {
-            if (GameManager.Instance.SceneNums == 0)
+            if (Managers.Instance.SceneNums == 0)
             {
-                GameManager.Instance.ChangeScene("99_End");
-                GameManager.Instance.SceneNums++;
+                Managers.Instance.ChangeScene("99_End");
+                Managers.Instance.SceneNums++;
             }
-            else if (GameManager.Instance.SceneNums == 1)
+            else if (Managers.Instance.SceneNums == 1)
             {
-                GameManager.Instance.ChangeScene("03_Collision");
-                GameManager.Instance.SceneNums++;
+                Managers.Instance.ChangeScene("03_Collision");
+                Managers.Instance.SceneNums++;
             }
         }
     }

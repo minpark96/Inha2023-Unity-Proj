@@ -18,7 +18,7 @@ public class StartScene : MonoBehaviour
         _StartMenu = GameObject.Find("StartMenu");
 
         _ButtonStart = _StartMenu.transform.GetChild(0).GetComponent<Button>();
-        _ButtonStart.onClick.AddListener(() => GameManager.Instance.ChangeNextScene());
+        _ButtonStart.onClick.AddListener(() => Managers.Instance.ChangeNextScene());
         _ButtonExit = _StartMenu.transform.GetChild(1).GetComponent<Button>();
         _ButtonExit.onClick.AddListener(() => Application.Quit());
     }

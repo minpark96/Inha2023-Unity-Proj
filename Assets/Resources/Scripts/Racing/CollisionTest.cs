@@ -6,7 +6,7 @@ public class CollisionTest : MonoBehaviour
 {
     float speedMove = 10.0f;
     float speedRotate = 100.0f;
-    Rigidbody rigidbody;
+    new Rigidbody rigidbody;
 
     // Start is called before the first frame update
     void Start()
