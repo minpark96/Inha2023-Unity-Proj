@@ -4,14 +4,27 @@ using UnityEngine;
 
 public class Enemy2D : MonoBehaviour
 {
-    public delegate void OnAttack();
-    public event OnAttack Attack;
+    public delegate void OnCollision();
+    public event OnCollision Collision;
+
+    public delegate void OnDead(Enemy2D enemy);
+    public event OnDead Dead;
+
+    public delegate void OnCreateEnemyProjectile(EnemyProjectile2D enemyProjectile);
+    public event OnCreateEnemyProjectile CreateEnemyProjectile;
+
+    [SerializeField]
+    int id;
+
+    public int ID { get { return id; } set { id = value; } }
 
     private Rigidbody2D rigidBody;
+    private Enemy2D thisEnemy;
     float maxSpeed = 200f;
 
     void Start()
     {
+        thisEnemy = GetComponent<Enemy2D>();
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
@@ -42,7 +55,10 @@ public class Enemy2D : MonoBehaviour
         while (true)
         {
             float randTime = Random.Range(2.0f, 4.0f);
-            Managers.Resource.Instantiate("2D/WolfProjectile", transform).transform.position = transform.position;
+            GameObject go = Managers.Resource.Instantiate("2D/WolfProjectile", transform);
+            go.transform.position = transform.position;
+            EnemyProjectile2D enemyProj = go.GetComponent<EnemyProjectile2D>();
+            CreateEnemyProjectile(enemyProj);
             yield return new WaitForSeconds(randTime);
         }
     }
@@ -51,11 +67,13 @@ public class Enemy2D : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Attack();
+            Collision();
+            Dead(thisEnemy);
             Managers.Resource.Destroy(this.gameObject);
         }
         else if (collision.CompareTag("PlayerProjectile") || collision.CompareTag("Finish"))
         {
+            Dead(thisEnemy);
             Managers.Resource.Destroy(this.gameObject);
         }
     }

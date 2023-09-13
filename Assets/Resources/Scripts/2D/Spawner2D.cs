@@ -5,8 +5,8 @@ using static UnityEngine.UI.Image;
 
 public class Spawner2D : MonoBehaviour
 {
-    public delegate void OnCreate(GameObject go);
-    public event OnCreate Create;
+    public delegate void OnCreateEnemy(Enemy2D enemy);
+    public event OnCreateEnemy CreateEnemy;
 
     public IEnumerator SpawnWolf()
     {
@@ -18,7 +18,8 @@ public class Spawner2D : MonoBehaviour
             Vector2 spawnPos = new Vector2(transform.position.x, randY);
             GameObject go = Managers.Resource.Instantiate("2D/Wolf", root);
             go.transform.position = spawnPos;
-            Create(go);
+            Enemy2D enemy = go.GetComponent<Enemy2D>();
+            CreateEnemy(enemy);
             yield return new WaitForSeconds(10.0f);
         }
     }

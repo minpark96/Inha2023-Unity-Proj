@@ -8,6 +8,7 @@ public class Player2D : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     float maxSpeed = 1000f;
+    int hp = 100;
     //private static int numProjectiles = 0;
     //public static int NumProjectiles { get { return numProjectiles; } }
     //new SpriteRenderer renderer;
@@ -20,7 +21,13 @@ public class Player2D : MonoBehaviour
         //renderer = GetComponent<SpriteRenderer>();
         Init();
 
-        ShowHPBar(50);
+        ShowHPBar(hp);
+    }
+
+    public void Hurt(int damage)
+    {
+        hp -= damage;
+        ShowHPBar(hp);
     }
 
     void ShowHPBar (int hp)

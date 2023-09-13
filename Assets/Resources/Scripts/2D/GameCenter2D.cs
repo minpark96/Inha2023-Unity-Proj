@@ -5,18 +5,26 @@ using UnityEngine;
 public class GameCenter2D : MonoBehaviour
 {
     [SerializeField]
-    GameObject _spawner;
-    GameObject _player;
+    GameObject spawner;
+    [SerializeField]
+    GameObject playerPrefab;
 
-    List<GameObject> _enemies;
+    Player2D player;
+
+    List<Enemy2D> enemies;
+    List<EnemyProjectile2D> enemyProjectiles;
+
+    int enemyDamage = 20;
+    int projectileDamage = 10;
 
     void Awake()
     {
-        CreatePool();
-        StartSpawn();
+        player = playerPrefab.GetComponent<Player2D>();
 
-        _spawner.GetComponent<Spawner2D>().Create -= PushEnemy;
-        _spawner.GetComponent<Spawner2D>().Create += PushEnemy;
+
+        CreatePool(); 
+        Subscribe();
+        StartSpawn();
     }
 
     void CreatePool()
@@ -27,14 +35,64 @@ public class GameCenter2D : MonoBehaviour
         Managers.Pool.CreatePool(Managers.Resource.Load<GameObject>($"Prefabs/2D/WolfProjectile"), 50);
     }
 
-    void PushEnemy(GameObject go)
+    void Subscribe()
     {
-        _enemies.Add(go);
+        spawner.GetComponent<Spawner2D>().CreateEnemy -= PushEnemy;
+        spawner.GetComponent<Spawner2D>().CreateEnemy += PushEnemy;
+    }
+
+    void PushEnemy(Enemy2D enemy)
+    {
+        enemies.Add(enemy);
+        enemy.ID = enemies.Count - 1;
+
+        enemy.Collision -= AttackFromEnemy;
+        enemy.Collision += AttackFromEnemy;
+        enemy.Dead -= PopEnemy;
+        enemy.Dead += PopEnemy;
+        enemy.CreateEnemyProjectile -= PushEnemyProjectile;
+        enemy.CreateEnemyProjectile += PushEnemyProjectile;
+    }
+
+    void PushEnemyProjectile(EnemyProjectile2D enemyProj)
+    {
+        enemyProjectiles.Add(enemyProj);
+        enemyProj.ID = enemyProjectiles.Count - 1;
+
+        enemyProj.Collision -= AttackFromEnemyProjectile;
+        enemyProj.Collision += AttackFromEnemyProjectile;
+        enemyProj.Dead -= PopEnemyProjectile;
+        enemyProj.Dead += PopEnemyProjectile;
+    }
+
+    void PopEnemy(Enemy2D enemy)
+    {
+        enemy.Collision -= AttackFromEnemy;
+        enemy.Dead -= PopEnemy;
+        enemy.CreateEnemyProjectile -= PushEnemyProjectile;
+        enemies.RemoveAt(enemy.ID);
+    }
+
+    void PopEnemyProjectile(EnemyProjectile2D enemyProj)
+    {
+        enemyProj.Collision -= AttackFromEnemyProjectile;
+        enemyProj.Dead -= PopEnemyProjectile;
+        enemyProjectiles.RemoveAt(enemyProj.ID);
+    }
+
+    void AttackFromEnemy()
+    {
+        player.Hurt(enemyDamage);
+    }
+
+    void AttackFromEnemyProjectile()
+    {
+        player.Hurt(projectileDamage);
     }
 
     void StartSpawn()
     {
-        StartCoroutine(_spawner.GetComponent<Spawner2D>().SpawnWolf());
-        StartCoroutine(_spawner.GetComponent<Spawner2D>().SpawnCloud());
+        StartCoroutine(spawner.GetComponent<Spawner2D>().SpawnWolf());
+        StartCoroutine(spawner.GetComponent<Spawner2D>().SpawnCloud());
     }
 }

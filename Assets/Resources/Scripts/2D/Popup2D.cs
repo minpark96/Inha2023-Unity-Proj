@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class Popup2D : MonoBehaviour
 {
-    public Text titleText = null;
-    public InputField inputText = null;
-
     public Toggle toggleBGM = null;
 
     public GameObject radioGroupObj = null;
@@ -15,9 +12,6 @@ public class Popup2D : MonoBehaviour
 
     void Start()
     {
-        titleText = GetComponentInChildren<Text>();
-        titleText.text = "”î";
-
         toggleRadio = radioGroupObj.GetComponentsInChildren<Toggle>();
     }
 
@@ -29,22 +23,11 @@ public class Popup2D : MonoBehaviour
     void onClickOK()
     {
         Debug.Log("onClickOK()");
-        titleText.text = "OK clicked!!";
     }
     void onClickCancel()
     {
         Debug.Log("onClickCancel()");
         gameObject.SetActive(false);
-    }
-
-    void onTextChanged()
-    {
-        titleText.text = inputText.text;
-    }
-
-    void onTextEndEdit()
-    {
-        titleText.text = inputText.text;
     }
 
     public void onToggleBGM()
