@@ -1,27 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player2D : MonoBehaviour
 {
+
     private Rigidbody2D rigidBody;
     float maxSpeed = 1000f;
-    private static int numProjectiles = 0;
-    public static int NumProjectiles { get { return numProjectiles; } }
+    //private static int numProjectiles = 0;
+    //public static int NumProjectiles { get { return numProjectiles; } }
     //new SpriteRenderer renderer;
+
+    public Image imgHPBar = null;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         //renderer = GetComponent<SpriteRenderer>();
         Init();
+
+        ShowHPBar(50);
+    }
+
+    void ShowHPBar (int hp)
+    {
+        imgHPBar.fillAmount = (float)hp / (float) 100;
     }
 
     void OnKeyboard()
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
-        Move_2(x, y);
+        Move(x, y);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -31,9 +42,7 @@ public class Player2D : MonoBehaviour
 
     void SpawnProjectile()
     {
-            numProjectiles++;
         Managers.Resource.Instantiate("2D/PlayerProjectile", transform).transform.position = transform.position;
-        
     }
 
     void Init()
@@ -53,7 +62,7 @@ public class Player2D : MonoBehaviour
     //    }
     //}
 
-    void Move_2(float x, float y)
+    void Move(float x, float y)
     {
         Vector3 position = rigidBody.transform.position;
         position = new Vector3(

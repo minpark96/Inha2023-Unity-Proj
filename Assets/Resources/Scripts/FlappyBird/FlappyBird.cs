@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class FlappyBird : MonoBehaviour
 {
     public delegate void Callback_OnTrigger(GameObject other);
-    Callback_OnTrigger onTrigger;
+    event Callback_OnTrigger onTrigger;
 
     public float JumpPower = 5.0f;
 
@@ -43,7 +44,6 @@ public class FlappyBird : MonoBehaviour
             Debug.LogWarning("Callback ¿ÃπÃ º≥¡§µ !");
             return;
         }
-
         onTrigger = callback_onTrigger;
     }
 
