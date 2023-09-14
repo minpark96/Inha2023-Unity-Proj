@@ -23,9 +23,20 @@ public class EnemyProjectile2D : MonoBehaviour
         thisEnemyProj = GetComponent<EnemyProjectile2D>();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        StartCoroutine(Death());
+        if (GameCenter2D.State == GameCenter2D.GameState.Play)
+        {
+            StartCoroutine(Death());
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameCenter2D.State == GameCenter2D.GameState.Play)
+        {
+            Dead(thisEnemyProj);
+        }
     }
 
     void Update()
@@ -49,12 +60,10 @@ public class EnemyProjectile2D : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Collision();
-            Dead(thisEnemyProj);
             Managers.Resource.Destroy(this.gameObject);
         }
         else if (collision.CompareTag("PlayerProjectile") || collision.CompareTag("Finish"))
         {
-            Dead(thisEnemyProj);
             Managers.Resource.Destroy(this.gameObject);
         }
     }

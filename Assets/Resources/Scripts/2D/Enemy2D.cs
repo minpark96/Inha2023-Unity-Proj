@@ -28,9 +28,20 @@ public class Enemy2D : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        StartCoroutine(SpawnProjectile());
+        if (GameCenter2D.State == GameCenter2D.GameState.Play)
+        {
+            StartCoroutine(SpawnProjectile());
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameCenter2D.State == GameCenter2D.GameState.Play)
+        {
+            Dead(thisEnemy);
+        }
     }
 
     void Update()
@@ -52,6 +63,8 @@ public class Enemy2D : MonoBehaviour
 
     public IEnumerator SpawnProjectile()
     {
+        float delayTime = 3.0f;
+        yield return new WaitForSeconds(delayTime);
         while (true)
         {
             float randTime = Random.Range(2.0f, 4.0f);
@@ -68,12 +81,10 @@ public class Enemy2D : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Collision();
-            Dead(thisEnemy);
             Managers.Resource.Destroy(this.gameObject);
         }
         else if (collision.CompareTag("PlayerProjectile") || collision.CompareTag("Finish"))
         {
-            Dead(thisEnemy);
             Managers.Resource.Destroy(this.gameObject);
         }
     }

@@ -4,11 +4,31 @@ using UnityEngine;
 
 public class PlayerProjectile2D : MonoBehaviour
 {
+    public delegate void OnDead(PlayerProjectile2D playerProj);
+    public event OnDead Dead;
+
     float _moveSpeed = 100f;
+    private PlayerProjectile2D thisPlayerProj;
+
+    void Start()
+    {
+        thisPlayerProj = GetComponent<PlayerProjectile2D>();
+    }
 
     void OnEnable()
     {
-        StartCoroutine(Death());
+        if (GameCenter2D.State == GameCenter2D.GameState.Play)
+        {
+            StartCoroutine(Death());
+        }
+    }
+
+    void OnDisable()
+    {
+        if (GameCenter2D.State == GameCenter2D.GameState.Play)
+        {
+            Dead(thisPlayerProj);
+        }
     }
 
     void Update()

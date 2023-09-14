@@ -2,12 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Player2D;
 
 public class Player2D : MonoBehaviour
 {
+    public delegate void OnShoot(PlayerProjectile2D playerProj);
+    public event OnShoot Shoot;
 
     private Rigidbody2D rigidBody;
     float maxSpeed = 1000f;
+
+    uint maxProjectiles = 3;
+
+    int numProjectiles = 0;
+    public int NumProjectiles { get { return numProjectiles; } set { numProjectiles = value; } }
+
     int hp = 100;
     //private static int numProjectiles = 0;
     //public static int NumProjectiles { get { return numProjectiles; } }
@@ -43,13 +52,20 @@ public class Player2D : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SpawnProjectile();
+            if (numProjectiles < maxProjectiles)
+            {
+                SpawnProjectile();
+            }
         }
     }
 
     void SpawnProjectile()
     {
-        Managers.Resource.Instantiate("2D/PlayerProjectile", transform).transform.position = transform.position;
+        GameObject go = Managers.Resource.Instantiate("2D/PlayerProjectile", transform);
+        go.transform.position = transform.position;
+        PlayerProjectile2D playerProj = go.GetComponent<PlayerProjectile2D>();
+        numProjectiles++;
+        Shoot(playerProj);
     }
 
     void Init()
