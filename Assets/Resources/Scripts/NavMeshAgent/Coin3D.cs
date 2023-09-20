@@ -1,33 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Coin3D : MonoBehaviour
 {
-    public delegate void OnCollision();
-    event OnCollision Collision;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Action OnCollisionPlayer;
+    public Action OnCollisionEnemy;
 
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player"))
         {
-            Collision();
+            OnCollisionPlayer();
         }
         else if(collision.CompareTag("Enemy"))
         {
-
+            OnCollisionEnemy();
         }
     }
 }

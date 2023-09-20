@@ -18,6 +18,8 @@ public class Player3D : MonoBehaviour
 
     NavMeshAgent agent = null;
 
+    public AudioClip audioClip = null;
+    private AudioSource audioSource = null;
 
     // Start is called before the first frame update
     void Start()
@@ -25,14 +27,17 @@ public class Player3D : MonoBehaviour
         pcController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
+
+        audioClip = Resources.Load(string.Format("Sounds/foot/{0}", "army")) as AudioClip;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Input_Animation();
-        CharacterControll_Slerp();
-        //NavMesh_Control();
+        //Input_Animation();
+        //CharacterControll_Slerp();
+        NavMesh_Control();
     }
 
     private void NavMesh_Control()
@@ -47,6 +52,24 @@ public class Player3D : MonoBehaviour
                 agent.destination = hit.point;
             }
         }
+
+        if (agent.velocity.magnitude > 0.5f)
+        {
+            PlaySound(audioClip);
+        }
+        else
+            StopSound();
+    }
+
+    void PlaySound(AudioClip clip)
+    {
+        if (audioSource.isPlaying) return;
+        audioSource.PlayOneShot(clip);
+    }
+
+    void StopSound()
+    {
+        audioSource.Stop();
     }
 
     private void Input_Animation()
