@@ -35,9 +35,9 @@ public class Player3D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Input_Animation();
-        //CharacterControll_Slerp();
-        NavMesh_Control();
+        Input_Animation();
+        CharacterControll_Slerp();
+        //NavMesh_Control();
     }
 
     private void NavMesh_Control()

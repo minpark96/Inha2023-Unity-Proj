@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Arrow3D : MonoBehaviour
@@ -13,11 +14,11 @@ public class Arrow3D : MonoBehaviour
 
     void Update()
     {
-        //transform.LookAt(transform.position + forward);
+        transform.LookAt(coinPosition);
     }
 
-    public void UpdateCoinPosition(GameObject go)
+    public void UpdateCoinPosition(Vector3 pos)
     {
-        
+        coinPosition = new Vector3(pos.x, transform.position.y, pos.z);
     }
 }

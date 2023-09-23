@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Spawner3D : MonoBehaviour
 {
-    public delegate void OnUpdateCoinPosition(GameObject coin);
-    public event OnUpdateCoinPosition UpdateCoinPosition;
-
     public List<GameObject> coins = new List<GameObject>();
     public GameObject spawnedCoin = null;
     Coin3D coin3D;
@@ -42,6 +39,8 @@ public class Spawner3D : MonoBehaviour
         coin3D.OnCollisionPlayer += CollisionPlayer;
         coin3D.OnCollisionEnemy -= CollisionEnemy;
         coin3D.OnCollisionEnemy += CollisionEnemy;
+
+        arrow.UpdateCoinPosition(spawnedCoin.transform.position);
     }
 
     void CollisionPlayer()
@@ -78,6 +77,6 @@ public class Spawner3D : MonoBehaviour
         coin3D.OnCollisionEnemy -= CollisionEnemy;
         coin3D.OnCollisionEnemy += CollisionEnemy;
 
-
+        arrow.UpdateCoinPosition(spawnedCoin.transform.position);
     }
 }
